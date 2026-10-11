@@ -1,0 +1,12 @@
+target/
+.bsp/
+.bloop/
+.metals/
+.idea/
+.vscode/
+*.class
+
+# Measurements and images for the slides, not part of the talk code
+talk-assets/
+project/metals.sbt
+project/project/
