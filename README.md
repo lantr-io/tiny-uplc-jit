@@ -9,7 +9,7 @@ Cardano — that runs real compiler output, and three ways to run it, each one t
 |---|---|---|
 | CEK machine | `core/.../Cek.scala` | The textbook abstract machine: a loop over (Control, Environment, Kontinuation). Stack-safe. |
 | Closure compiler | `core/.../ClosureCompiler.scala` | Translate the term once into a tree of Scala closures. |
-| Staged JIT | `core/.../StagedJit.scala` | Generate Scala code with quotes and splices, compile it at runtime with `scala3-staging`, and let the JVM JIT do the rest. |
+| Staged compiler | `core/.../StagedJit.scala` | Generate Scala code with quotes and splices, compile it at runtime with `scala3-staging`, and let the JVM JIT do the rest. |
 
 The `scalus-bridge` module compiles a plain Scala `fib` to UPLC with
 [Scalus](https://github.com/scalus3/scalus), converts it to the mini-UPLC and runs it on all three
@@ -34,7 +34,7 @@ sbt test                                    # all engines agree with the CEK mac
 sbt "scalusBridge/run 20"                   # the live demo: Scala → Scalus → UPLC → our engines
 sbt "core/run fib 25"                       # hand-written examples + the stack-depth pitfall
 sbt "bench/Jmh/run .*EngineBenchmark.*"     # steady-state evaluation time
-sbt "bench/Jmh/run .*CompileBenchmark.*"    # JIT compilation cost
+sbt "bench/Jmh/run .*CompileBenchmark.*"    # staged compilation cost
 ```
 
 `core/run` ends with deep recursion (`sumTo 100000`): the CEK machine succeeds, the two compilers

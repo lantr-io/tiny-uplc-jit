@@ -2,14 +2,14 @@ package fromscalus
 
 import _root_.uplc.{Const, Term}
 import scalus.cardano.ledger.MajorProtocolVersion
-import scalus.compiler.compile
+import scalus.compiler.{compile, Options}
 import scalus.toUplcOptimized
 import scalus.uplc.{Constant as SConst, Term as STerm}
 import scalus.uplc.eval.PlutusVM
 
 /** `fib`, from Scala source to every engine:
   * {{{
-  * Scala ──Scalus──▶ UPLC ──FromScalus──▶ mini-UPLC ──▶ CEK | closures | staged JIT
+  * Scala ──Scalus──▶ UPLC ──FromScalus──▶ mini-UPLC ──▶ CEK | closures | staged compiler
   * }}}
   *
   * Note: no `import scalus.*` here — it would bring `scalus.uplc` into scope and shadow our own
@@ -20,8 +20,12 @@ object ScalusFib:
     /** Scala → SIR (Scalus' intermediate representation), done by the compiler plugin. */
     private val sir = compile((n: BigInt) => FibContract.fib(n))
 
-    /** SIR → optimized UPLC, exactly what would go on-chain (minus the error traces). */
-    val scalusUplc: STerm = sir.toUplcOptimized(generateErrorTraces = false)
+    /** SIR → optimized UPLC with the release options (no error traces, traces removed), except
+      * common-subexpression elimination. CSE would bind the shared `[fib fib]` to an extra lambda:
+      * cheaper on-chain, but harder to read in a demo, so it is off (`cseIterations = 0`).
+      */
+    val scalusUplc: STerm =
+        sir.toUplcOptimized(using Options.release.copy(cseIterations = 0))()
 
     /** The same program in our mini-UPLC. */
     val fib: Term = FromScalus.convert(scalusUplc)

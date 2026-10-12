@@ -31,7 +31,7 @@ object StagedJit:
     /** Compiles a closed term to a native JVM function that evaluates it. */
     def compile(term: Term): () => Any = staging.run(program(term))
 
-    /** The Scala source the JIT generates for `term` — what the audience sees in the demo. */
+    /** The Scala source the staged compiler generates for `term` — what the audience sees in the demo. */
     def showCode(term: Term): String = staging.withQuotes(program(term).show)
 
     /** The whole program is a `() => Any`, so it can be compiled once and run many times. */

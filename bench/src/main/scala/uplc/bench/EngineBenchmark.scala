@@ -42,8 +42,8 @@ class EngineBenchmark:
 
     @Benchmark def stagedJit(): Any = jit()
 
-/** One-off cost of the staged JIT: generating, type-checking and compiling Scala to bytecode. This
-  * is the price you pay up front, so the JIT pays off for scripts that are evaluated many times.
+/** One-off cost of the staged compiler: generating, type-checking and compiling Scala to bytecode. This
+  * is the price you pay up front, so staging pays off for scripts that are evaluated many times.
   */
 @State(Scope.Benchmark)
 @BenchmarkMode(Array(Mode.AverageTime))

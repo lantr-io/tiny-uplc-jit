@@ -6,7 +6,7 @@ package uplc
 enum Engine(val label: String):
     case CEK extends Engine("CEK machine")
     case Closures extends Engine("Closure compiler")
-    case JIT extends Engine("Staged JIT")
+    case JIT extends Engine("Staged compiler")
 
     /** Prepares `term` for repeated evaluation. Each call of the result evaluates `term` once and
       * returns its value as a constant, or `None` if the result is not a constant (e.g. a lambda).

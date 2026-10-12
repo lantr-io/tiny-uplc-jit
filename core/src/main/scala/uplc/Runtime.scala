@@ -1,6 +1,6 @@
 package uplc
 
-/** Runtime value representation shared by the closure compiler and the staged JIT.
+/** Runtime value representation shared by the closure compiler and the staged compiler.
   *
   * Instead of a `Value` ADT we use plain JVM objects, so compiled code needs no wrapping:
   *
